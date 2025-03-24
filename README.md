@@ -32,7 +32,6 @@ npm install
    ```env
    OPENAI_API_KEY=your_openai_api_key_here
    CAL_API_KEY=your_cal_api_key_here
-   PORT=3000
    ```
 
    OR
@@ -85,7 +84,6 @@ The server will start on port 3000 (or the port specified in your environment va
 
 - `OPENAI_API_KEY`: Your OpenAI API key
 - `CAL_API_KEY`: Your Cal.com API key
-- `PORT`: Server port (default: 3000)
 
 ## Development
 
