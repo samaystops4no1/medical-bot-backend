@@ -19,7 +19,7 @@ type BookingResponse = {
 }
 
 // API Config
-const API_KEY = "cal_live_8105d538c38eb090c4e548aafa7baeca";
+const API_KEY = "";
 const BASE_URL = "https://api.cal.com/v2";
 export const EVENT_TYPE = "Appoinment with Dr Sherlock Holmes"; // Replace with actual event type
 export const USER_EMAIL = "test@test.com"; // Replace with attendee's email
