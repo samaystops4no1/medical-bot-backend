@@ -1,6 +1,20 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+if (!process.env.CAL_API_KEY) {
+    throw new Error('CAL_API_KEY is not defined in environment variables');
+}
+
 // Define types
 type TimeSlot = {
     start: string;
+}
+
+type Attendee = {
+    name: string;
+    timeZone: string;
+    email: string;
 }
 
 type AvailabilityResponse = {
@@ -18,8 +32,14 @@ type BookingResponse = {
     }
 }
 
+type BookingRequest = {
+    eventTypeId: number;
+    attendee: Attendee;
+    start: string;
+}
+
 // API Config
-const API_KEY = "";
+const API_KEY = process.env.CAL_API_KEY;
 const BASE_URL = "https://api.cal.com/v2";
 export const EVENT_TYPE = "Appoinment with Dr Sherlock Holmes"; // Replace with actual event type
 export const USER_EMAIL = "test@test.com"; // Replace with attendee's email
@@ -60,6 +80,16 @@ export async function bookAppointment(eventType: string, email: string): Promise
 
     try {
         console.log("Booking appointment");
+        const bookingRequest: BookingRequest = {
+            eventTypeId: 2115193,
+            attendee: { 
+                name: "Sherlock Holmes",
+                timeZone: "America/New_York",
+                email: email,
+            },
+            start: slot.start,
+        };
+
         const response = await fetch(`${BASE_URL}/bookings`, {
             method: "POST",
             headers: {
@@ -67,15 +97,7 @@ export async function bookAppointment(eventType: string, email: string): Promise
                 "Content-Type": "application/json",
                 "cal-api-version": "2024-08-13",
             },
-            body: JSON.stringify({
-                eventTypeId: 2115193,
-                attendee: { 
-                    name: "Sherlock Holmes",
-                    timeZone: "America/New_York",
-                    email: email,
-                 },
-                start: slot.start,
-            }),
+            body: JSON.stringify(bookingRequest),
         });
 
         if (!response.ok) throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -107,6 +129,3 @@ function getOrdinalSuffix(day: number): string {
     }
 }
 
-// Example usage:
-// formatDateTime("2025-03-24T05:00:00.000Z") 
-// Returns: "Monday, March 24, 2025, 5:00 AM EDT"

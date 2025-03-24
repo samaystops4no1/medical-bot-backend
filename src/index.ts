@@ -20,13 +20,10 @@ app.use(cors({
 }));
 
 // Routes
-app.get('/', (req: Request, res: Response) => {
-  res.json({ message: 'Welcome to the API!' });
-});
 
 app.get('/api/chats', (req: Request, res: Response) => {
     const chatList = getChats();
-  res.json(chatList);
+    res.json(chatList);
 });
 
 app.get('/api/chats/:id', (req: Request, res: Response) => {
@@ -50,7 +47,7 @@ app.post('/api/messages/:id', (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Message is required' });
   }
 
-  generateResponse(chatId,message, res);
+  generateResponse(chatId, message, res);
 });
     
 app.post('/api/book-appointment', (req: Request, res: Response) => {

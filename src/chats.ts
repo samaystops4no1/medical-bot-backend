@@ -1,5 +1,6 @@
-type Message = { role: string; content: string };
-type Chat = {
+export type Message = { role: string; content: string };
+
+export type Chat = {
   id: number;
   messages: Message[];
   createdTime: number;
@@ -10,8 +11,6 @@ type Chat = {
 let chats: Chat[] = [];
 
 export function createNewChat(newChatObject: Chat) {
-  console.log('creating new chat');
-  console.log(newChatObject);
   chats.push(newChatObject);
   return newChatObject;
 }
