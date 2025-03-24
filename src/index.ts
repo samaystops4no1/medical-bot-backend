@@ -53,7 +53,7 @@ app.post('/api/messages/:id', (req: Request, res: Response) => {
 app.post('/api/book-appointment', (req: Request, res: Response) => {
  
   bookAppointment(EVENT_TYPE, USER_EMAIL)
-    .then(result => res.json({ message: result }))
+    .then(result => res.json({ ...result }))
     .catch(error => res.status(500).json({ error: error.message }));
 });
 

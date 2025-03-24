@@ -46,7 +46,6 @@ export const USER_EMAIL = "test@test.com"; // Replace with attendee's email
 
 // Function to fetch available slots
 async function getAvailableSlots(eventType: string): Promise<TimeSlot | null> {
-    console.log("Getting available slots");
     try {
         const response = await fetch(`${BASE_URL}/slots?eventTypeId=2115193&start=2025-03-20&end=2025-04-20`, {
             method: "GET",
@@ -60,7 +59,6 @@ async function getAvailableSlots(eventType: string): Promise<TimeSlot | null> {
         if (!response.ok) throw new Error(`Error: ${response.status} ${response.statusText}`);
 
         const data = await response.json() as AvailabilityResponse;
-        console.log("Available slots:", data);
         
         // Get the first available date and slot
         const firstDate = Object.keys(data.data)[0];
@@ -72,14 +70,12 @@ async function getAvailableSlots(eventType: string): Promise<TimeSlot | null> {
 }
 
 // Function to book the first available slot
-export async function bookAppointment(eventType: string, email: string): Promise<string> {
-    console.log('starting to booking appointment');
+export async function bookAppointment(eventType: string, email: string): Promise<{ message: string, error: boolean }> {
     const slot = await getAvailableSlots(eventType);
    
-    if (!slot) return "No available slots found.";
+    if (!slot) return { message: "No available slots found.", error: true };
 
     try {
-        console.log("Booking appointment");
         const bookingRequest: BookingRequest = {
             eventTypeId: 2115193,
             attendee: { 
@@ -103,10 +99,10 @@ export async function bookAppointment(eventType: string, email: string): Promise
         if (!response.ok) throw new Error(`Error: ${response.status} ${response.statusText}`);
 
         const data = await response.json() as BookingResponse;
-        return `Appointment booked: ${formatDateTime(data.data.start)} to ${formatDateTime(data.data.end)}. Meeting URL: ${data.data.meetingUrl}`;
+        return { message:   `Appointment booked: ${formatDateTime(data.data.start)} to ${formatDateTime(data.data.end)}. Meeting URL: ${data.data.meetingUrl}`, error: false };
     } catch (error) {
         console.error("Error booking appoinment:", error);
-        return `Error booking appointment: ${error}`;
+        return { message: `Error booking appointment: ${error}`, error: true };
     }
 }
 
